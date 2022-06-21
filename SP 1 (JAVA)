@@ -1,0 +1,665 @@
+package hahaha1;
+ 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+ 
+import hello.HandyPerson;
+import hello.IndustrialPlumber;
+ 
+ 
+public class UberHelp {
+ArrayList<Human> stuff=new ArrayList<>();
+HashMap<String,String> stuffLookup=new HashMap<>();
+public void loadEmployee() throws IOException{
+BufferedReader reader=new BufferedReader(new FileReader("Countries.txt"));
+String line="";
+int linecount=0;
+while((line=reader.readLine())!=null){
+linecount++;
+if(linecount>1){
+//System.out.println(line);
+String [] data=line.split(",");
+if(data[0].equals("IND_PLUM"))
+stuffLookup.put(data[1], "IndustrialPlumber");
+if(data[0].equals("HANDY"))
+stuffLookup.put(data[1], "HandyPerson");
+if(data[0].equals("NOBODY"))
+stuffLookup.put(data[1], "NobodySpecial");
+if(data[0].equals("IND_PLUM")){
+Human human=new IndustrialPlumber(data[0],data[1],Integer.parseInt(data[2]),Integer.parseInt(data[4]),Double.parseDouble(data[5]));
+stuff.add(human);
+}
+if(data[0].equals("HANDY")){
+Human human=new HandyPerson(data[0],data[1],Integer.parseInt(data[2]),Integer.parseInt(data[3]),Integer.parseInt(data[4]),Double.parseDouble(data[5]));
+stuff.add(human);
+}
+if(data[0].equals("NOBODY")){
+Human human=new NobodySpecial(data[0],data[1],Integer.parseInt(data[2]),Integer.parseInt(data[3]),Integer.parseInt(data[4]),Double.parseDouble(data[5]));
+stuff.add(human);
+}
+}
+}
+ 
+}
+public void ElectricianbyPrice(){
+Iterator<Human> itr=stuff.iterator();
+HashMap<String,Integer> hm=new HashMap<>();
+while(itr.hasNext()){
+Human h=itr.next();
+String type=stuffLookup.get(h.getName());
+if(type.equals("HandyPerson")){
+hm.put(h.getName(),h.getRateelectrician());
+}
+else if(type.equals("NobodySpecial")){
+hm.put(h.getName(),h.getRateelectrician());
+}
+}
+List<Map.Entry<String, Integer> > list =
+new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+ 
+// Sort the list
+Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+public int compare(Map.Entry<String, Integer> o1,
+Map.Entry<String, Integer> o2)
+{
+return (o1.getValue()).compareTo(o2.getValue());
+}
+});
+ 
+// put data from sorted list to hashmap
+HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+for (Map.Entry<String, Integer> aa : list) {
+temp.put(aa.getKey(), aa.getValue());
+}
+System.out.println("Type\t\tEmployee Name");
+for (Map.Entry<String, Integer> en : temp.entrySet()) {
+System.out.println( stuffLookup.get(en.getKey())+"\t"+en.getKey());
+ 
+}
+}
+public void Electricianbyrating(){
+Iterator<Human> itr=stuff.iterator();
+HashMap<String,Double> hm=new HashMap<>();
+while(itr.hasNext()){
+Human h=itr.next();
+String type=stuffLookup.get(h.getName());
+if(type.equals("HandyPerson")){
+hm.put(h.getName(),h.getRating());
+}
+else if(type.equals("NobodySpecial")){
+hm.put(h.getName(),h.getRating());
+}
+}
+List<Map.Entry<String, Double> > list =
+new LinkedList<Map.Entry<String, Double> >(hm.entrySet());
+ 
+// Sort the list
+Collections.sort(list, new Comparator<Map.Entry<String, Double> >() {
+public int compare(Map.Entry<String, Double> o1,
+Map.Entry<String, Double> o2)
+{
+return (o2.getValue()).compareTo(o1.getValue());
+}
+});
+ 
+// put data from sorted list to hashmap
+HashMap<String, Double> temp = new LinkedHashMap<String,Double>();
+for (Map.Entry<String, Double> aa : list) {
+temp.put(aa.getKey(), aa.getValue());
+}
+System.out.println("Type\t\tEmployee Name");
+for (Map.Entry<String, Double> en : temp.entrySet()) {
+System.out.println( stuffLookup.get(en.getKey())+"\t"+en.getKey());
+ 
+}
+ 
+}
+public void PlumberbyPrice(){
+Iterator<Human> itr=stuff.iterator();
+HashMap<String,Integer> hm=new HashMap<>();
+while(itr.hasNext()){
+Human h=itr.next();
+String type=stuffLookup.get(h.getName());
+hm.put(h.getName(),h.getRateplumber());
+}
+List<Map.Entry<String, Integer> > list =
+new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+ 
+// Sort the list
+Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+public int compare(Map.Entry<String, Integer> o1,
+Map.Entry<String, Integer> o2)
+{
+return (o1.getValue()).compareTo(o2.getValue());
+}
+});
+ 
+// put data from sorted list to hashmap
+HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+for (Map.Entry<String, Integer> aa : list) {
+temp.put(aa.getKey(), aa.getValue());
+}
+System.out.println("Type\t\t\tEmployee Name\tPrice($)");
+for (Map.Entry<String, Integer> en : temp.entrySet()) {
+if(stuffLookup.get(en.getKey()).equals("IndustrialPlumber"))
+System.out.println( stuffLookup.get(en.getKey())+"\t"+en.getKey()+"\t\t"+en.getValue());
+else
+System.out.println( stuffLookup.get(en.getKey())+"\t\t"+en.getKey()+"\t\t"+en.getValue());
+ 
+}
+}
+public void PlumberbyRating(){
+Iterator<Human> itr=stuff.iterator();
+HashMap<String,Double> hm=new HashMap<>();
+while(itr.hasNext()){
+Human h=itr.next();
+String type=stuffLookup.get(h.getName());
+hm.put(h.getName(),h.getRating());
+}
+List<Map.Entry<String, Double> > list =
+new LinkedList<Map.Entry<String, Double> >(hm.entrySet());
+ 
+// Sort the list
+Collections.sort(list, new Comparator<Map.Entry<String, Double> >() {
+public int compare(Map.Entry<String, Double> o1,
+Map.Entry<String, Double> o2)
+{
+return (o2.getValue()).compareTo(o1.getValue());
+}
+});
+ 
+// put data from sorted list to hashmap
+HashMap<String, Double> temp = new LinkedHashMap<String,Double>();
+for (Map.Entry<String, Double> aa : list) {
+temp.put(aa.getKey(), aa.getValue());
+}
+System.out.println("Type\t\t\tEmployee Name\tRating");
+for (Map.Entry<String, Double> en : temp.entrySet()) {
+if(stuffLookup.get(en.getKey()).equals("IndustrialPlumber"))
+System.out.println( stuffLookup.get(en.getKey())+"\t"+en.getKey()+"\t\t"+en.getValue());
+else
+System.out.println( stuffLookup.get(en.getKey())+"\t\t"+en.getKey()+"\t\t"+en.getValue());
+ 
+ 
+}
+ 
+}
+public void reserveElectrician(){
+System.out.print("Enter the name of the employee you would like to reserve:");
+Scanner sc=new Scanner(System.in);
+System.out.println();
+String name=sc.nextLine();
+Character c=name.charAt(0);
+c=Character.toUpperCase(c);
+name=c+name.substring(1);
+String type=stuffLookup.get(name);
+//System.out.println(type);
+if(type.equals("NobodySpecial")|| type.equals("HandyPerson")){
+Iterator <Human> itr=stuff.iterator();
+int count=0;
+while(itr.hasNext()){
+Human h=itr.next();
+if(h.getName().equals(name)){
+if(h.isAvailable())
+{
+h.setAvailable(false);
+h.completedJob();
+stuff.remove(count);
+stuff.add(count, h);
+System.out.println(type+" "+h.getName()+"has been reserved to change your lightbulbs for $"+h.getRateelectrician());
+}
+else
+System.out.println(name+" is not available at the moment");
+break;
+}
+count++;
+}
+ 
+}
+else
+System.out.println("Human: "+name+" is not qualified to change your bulbs");
+}
+public void reservePlumber(){
+System.out.print("Enter the name of the employee you would like to reserve:");
+Scanner sc=new Scanner(System.in);
+System.out.println();
+String name=sc.nextLine();
+Character c=name.charAt(0);
+c=Character.toUpperCase(c);
+name=c+name.substring(1);
+String type=stuffLookup.get(name);
+Iterator <Human> itr=stuff.iterator();
+int count=0;
+while(itr.hasNext()){
+Human h=itr.next();
+if(h.getName().equals(name)){
+if(h.isAvailable())
+{
+h.setAvailable(false);
+h.completedJob();
+stuff.remove(count);
+stuff.add(count, h);
+System.out.println(type+" "+h.getName()+"has been reserved to unplug your drain for $"+h.getRateplumber());
+}
+else
+System.out.println(name+" is not available at the moment");
+break;
+}
+count++;
+}
+}
+public void searchEmployee(){
+System.out.print("What are you looking for:");
+Scanner sc=new Scanner(System.in);
+String name=sc.nextLine();
+Character c=name.charAt(0);
+c=Character.toUpperCase(c);
+name=c+name.substring(1);
+System.out.println();
+String type=stuffLookup.get(name);
+boolean set=false;
+Iterator<Human> itr=stuff.iterator();
+while(itr.hasNext()){
+Human h=itr.next();
+if(h.getName().equals(name)){
+set=true;
+System.out.println(type+": "+h.getName()+" is an employee at UberHelps with a rating of "+h.getRating()+"and rate of $"+h.getRateplumber());
+break;
+}
+}
+if(!set){
+System.out.println(name+"is not an employee at UberHelps");
+}
+}
+public void addEmployee(){
+System.out.print("Enter name:");
+Scanner sc=new Scanner(System.in);
+String name=sc.nextLine();
+System.out.println("1.NOBODY");
+System.out.println("2.HANDY");
+System.out.println("3.IND_PLUM");
+System.out.println("choose by number!");
+int n=sc.nextInt();
+if(n==1){
+Human h=new NobodySpecial("NOBODY",name,0,0,0,0);
+stuff.add(h);
+stuffLookup.put(name, "NobodySpecial");
+System.out.println("Successfully added");
+}
+else if(n==2){
+Human h=new HandyPerson("HANDY",name,0,0,0,0);
+stuff.add(h);
+stuffLookup.put(name,"HandyPerson");
+System.out.println("Successfully added");
+}
+else if(n==3){
+Human h=new HandyPerson("IND_PLUM",name,0,0,0,0);
+stuff.add(h);
+stuffLookup.put(name,"IndustrialPlumber");
+System.out.println("Successfully added");
+}
+else
+System.out.println("You had to choose between 1 to 3");
+}
+public void removeEmployee(){
+System.out.print("Enter the name of the employee you want to remove: ");
+Scanner sc=new Scanner(System.in);
+String name=sc.nextLine();
+Character c=name.charAt(0);
+c=Character.toUpperCase(c);
+name=c+name.substring(1);
+Iterator<Human> itr=stuff.iterator();
+int count=0;
+boolean set=false;
+while(itr.hasNext()){
+Human h=itr.next();
+if(h.getName().equals(name)){
+stuff.remove(count);
+stuffLookup.remove(h.getName(),stuffLookup.get(h.getName()));
+System.out.println(h.getName()+" has been removed successfully");
+set=true;
+break;
+}
+count++;
+}
+if(!set){
+ 
+System.out.println("No employee with such name exists");
+}
+}
+public void viewEmployee(){
+Iterator<Human> itr=stuff.iterator();
+HashMap<String,Integer> hm=new HashMap<>();
+HashMap<String,Double> map=new HashMap<>();
+while(itr.hasNext()){
+Human h=itr.next();
+hm.put(h.getName(),h.getNbjobs());
+map.put(h.getName(),h.getRating());
+}
+List<Map.Entry<String, Integer> > list =
+new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+ 
+// Sort the list
+Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+public int compare(Map.Entry<String, Integer> o1,
+Map.Entry<String, Integer> o2)
+{
+return (o1.getValue()).compareTo(o2.getValue());
+}
+});
+ 
+// put data from sorted list to hashmap
+HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+for (Map.Entry<String, Integer> aa : list) {
+temp.put(aa.getKey(), aa.getValue());
+}
+System.out.println("Type\t\t\tEmployee Name\t\tJobs\t\t\tRating");
+for (Map.Entry<String, Integer> en : temp.entrySet()) {
+if(stuffLookup.get(en.getKey()).equals("IndustrialPlumber"))
+System.out.println( stuffLookup.get(en.getKey())+"\t"+en.getKey()+"\t\t\t"+en.getValue()+"\t\t\t"+map.get(en.getKey()));
+else
+System.out.println( stuffLookup.get(en.getKey())+"\t\t"+en.getKey()+"\t\t\t"+en.getValue()+"\t\t\t"+map.get(en.getKey()));
+ 
+}
+ 
+}
+public void rateEmployee(){
+System.out.print("Enter the name of the employee you would like to rate:");
+System.out.println();
+Scanner sc=new Scanner(System.in);
+String name=sc.next();
+Character c=name.charAt(0);
+c=Character.toUpperCase(c);
+name=c+name.substring(1);
+Iterator<Human> itr=stuff.iterator();
+while(itr.hasNext()){
+Human h=itr.next();
+if(h.getName().equals(name)){
+while(true){
+System.out.println("Rate "+name+":");
+int i=sc.nextInt();
+if(i>=1 && i<=5){
+System.out.println(name+" is done!\n"+name+"'s rating is now:"+h.getRating());
+break;
+}
+else{
+System.out.println("Invalid Rating.Please enter a rating from 1 to 5");
+}
+}
+}
+}
+}
+public void start(UberHelp u){
+while(true){
+System.out.print("What would you like to do? Enter the menu number: ");
+Scanner sc=new Scanner(System.in);
+int val=sc.nextInt();
+if(val==1)
+{
+u.ElectricianbyPrice();
+}
+else if(val==2){
+u.Electricianbyrating();
+}
+else if(val==3){
+u.PlumberbyPrice();
+}
+else if(val==4){
+u.PlumberbyRating();
+}
+else if(val==5){
+u.reserveElectrician();
+}
+else if(val==6){
+u.reservePlumber();
+}
+else if(val==7){
+u.rateEmployee();
+}
+else if(val==8){
+u.searchEmployee();
+}
+else if(val==9){
+u.addEmployee();
+}
+else if(val==10){
+u.removeEmployee();
+}
+else if(val==11){
+u.viewEmployee();
+}
+else if(val==12){
+break;
+}
+}
+}
+public static void main(String[] args) throws IOException{
+UberHelp u=new UberHelp();
+u.loadEmployee();
+//u.ElectricianbyPrice();
+//u.Electricianbyrating();
+//u.PlumberbyPrice();
+//u.PlumberbyRating();
+//u.reserveElectrician();
+//u.reserveElectrician();
+System.out.println("              Welcme to UberHelps! ");
+System.out.println();
+System.out.println(" <----------------------------------------------------------------------------------------------->");
+System.out.println(" | 1.Find Electrician by Price  7.Rate an Uber Employee by name |");
+System.out.println(" | 2.Find Electrician by Rating 8.Search for an Employee |");
+System.out.println(" | 3.Find Plumber by Price      9.Add Employee |");
+System.out.println(" | 4.Find Plumber by Rating     10.Remove Employee |");
+System.out.println(" | 5.Reserve an Electrician     11.View Employees |");
+System.out.println(" | 6.Reserve a Plumber          12.EXIT |");
+System.out.println(" <----------------------------------------------------------------------------------------------->");
+u.start(u);
+}
+}
+ 
+HandyPerson.java 
+package hello;
+ 
+import hahaha1.Electrician;
+import hahaha1.Human;
+import hahaha1.Plumber;
+ 
+ 
+public class HandyPerson extends Human implements Plumber,Electrician{
+private int ratePlumber;
+private int rateElectrician;
+private String type;
+public HandyPerson(String name) {
+super(name);
+// TODO Auto-generated constructor stub
+}
+ 
+public int changeBulb() {
+// TODO Auto-generated method stub
+return 0;
+}
+ 
+public int unplugDrain() {
+// TODO Auto-generated method stub
+return 0;
+}
+ 
+@Override
+public String toString() {
+return "HandyPerson []";
+}
+public HandyPerson(String type,String name,int ratePlumber,int rateElectrician,int nbjob,double rating){
+super(name,true,rating,nbjob);
+this.type=type;
+this.ratePlumber=ratePlumber;
+this.rateElectrician=rateElectrician;
+super.setRateplumber(ratePlumber);
+super.setRateelectrician(rateElectrician);
+}
+}
+ 
+ 
+IndustrialPlumber.java 
+
+package hello;
+ 
+import hahaha1.Human;
+import hahaha1.Plumber;
+ 
+public class IndustrialPlumber extends Human implements Plumber{
+private int ratePlumber;
+private String type;
+public IndustrialPlumber(String name) {
+super(name);
+// TODO Auto-generated constructor stub
+}
+ 
+public int unplugDrain() {
+// TODO Auto-generated method stub
+return this.ratePlumber;
+}
+ 
+public IndustrialPlumber(String type,String name,int ratePlumber,int nbjob,double rating){
+super(name,true,rating,nbjob);
+this.type=type;
+this.ratePlumber=ratePlumber;
+super.setRateplumber(ratePlumber);
+}
+}
+
+
+Human.java 
+
+package hahaha1;
+ 
+ 
+public class Human {
+private String name;
+private boolean isAvailable;
+private double rating;
+private int nbJobs;
+private int rateplumber;
+private int rateelectrician;
+public Human(String name){
+this.name=name;
+}
+public String getName(){
+return name;
+}
+@Override
+public String toString() {
+return "Human "+getName();
+}
+public boolean isAvailable(){
+return isAvailable;
+}
+public void reserve(){
+this.isAvailable=false;
+}
+public void setAvailable(boolean bool){
+this.isAvailable=bool;
+}
+public void completedJob(){
+this.nbJobs++;
+}
+public int hashCode(){
+return this.name.hashCode();
+}
+public boolean equals(Object o){
+return false;
+}
+public int compareTo(Object o){
+return this.compareTo(o);
+}
+public void setRating(int val){
+this.rating=this.nbJobs/val;
+}
+public double getRating(){
+return this.rating;
+}
+public int getRateplumber() {
+return rateplumber;
+}
+public void setRateplumber(int rateplumber) {
+this.rateplumber = rateplumber;
+}
+public int getRateelectrician() {
+return rateelectrician;
+}
+public void setRateelectrician(int rateelectrician) {
+this.rateelectrician = rateelectrician;
+}
+public int getNbjobs(){
+return this.nbJobs;
+}
+public Human(String name, boolean isAvailable, double rating, int nbJobs) {
+this.name = name;
+this.isAvailable = isAvailable;
+this.rating = rating;
+this.nbJobs = nbJobs;
+}
+ 
+}
+ 
+
+Plumber.java 
+
+package hahaha1;
+ 
+public interface Plumber {
+int unplugDrain();
+}
+
+
+Electrician.java 
+
+package hahaha1;
+ 
+public interface Electrician {
+int changeBulb();
+}
+
+
+NobodySpecial.java 
+
+package hahaha1;
+ 
+public class NobodySpecial extends Human implements Plumber,Electrician {
+private int ratePlumber;
+private int rateElectrician;
+private String type;
+public NobodySpecial(String name) {
+super(name);
+// TODO Auto-generated constructor stub
+}
+ 
+public int changeBulb() {
+// TODO Auto-generated method stub
+return 0;
+}
+ 
+public int unplugDrain() {
+// TODO Auto-generated method stub
+return 0;
+}
+NobodySpecial(String type,String name,int ratePlumber,int rateElectrician,int nbjob,double rating){
+super(name,true,rating,nbjob);
+this.type=type;
+this.ratePlumber=ratePlumber;
+this.rateElectrician=rateElectrician;
+super.setRateplumber(ratePlumber);
+super.setRateelectrician(rateElectrician);
+}
+ 
+}
